@@ -1,0 +1,120 @@
+NPI-19 Pressure Sensor
+===========================================
+
+.. seo::
+    :description: Instructions for setting up NPI-19 pressure sensors with ESPHome
+    :image: npi19.jpg
+    :keywords: NPI-19 NPI19
+
+The ``npi19`` sensor platform allows you to use your NPI-19 (`datasheet <https://www.amphenol-sensors.com/hubfs/AAS-920-699F-NovaSensor-NPI-19-I2C-061322-web.pdf>`__,
+`product page <https://www.amphenol-sensors.com/en/novasensor/pressure-sensors/3358-npi-19-i2c>`__) pressure sensors with ESPHome. 
+
+.. figure:: images/npi19.jpg
+    :align: center
+    :width: 50.0%
+
+    NPI-19 Pressure Sensor.
+
+
+Configuration:
+--------------
+:ref:`I²C <i2c>` bus is required to be set up in your configuration for this sensor to work.
+
+.. code-block:: yaml
+
+    # Example configuration entry
+    i2c:
+                
+    sensor:
+      - platform: npi19
+        address: 0x28
+        update_interval: 60s
+
+        pressure:
+          name: "Raw Pressure"
+          id: pressure_raw
+          
+        temperature:
+          name: Temperature
+
+      - platform: copy
+        source_id: pressure_raw
+        name: Pressure
+        state_class: measurement
+        device_class: pressure
+        unit_of_measurement: psi
+
+        filters:
+          - calibrate_linear:
+            - 1638 -> 0.5
+            - 14746 -> 4.5
+
+
+Configuration variables:
+------------------------
+
+- **i2c_id** (*Optional*, :ref:`config-id`): Manually specify the ID of the :ref:`I²C Component <i2c>`. Defaults to the default I²C bus. 
+- **address** (*Optional*, int): Manually specify the I²C address of  the sensor. Defaults to ``0x28``. 
+- **pressure** (*Optional*): The information for the pressure sensor.
+
+ - All other options from :ref:`Sensor <config-sensor>`.
+
+- **temperature** (*Optional*): The information for the temperature sensor.
+
+ - All other options from :ref:`Sensor <config-sensor>`.
+
+
+
+Converting units:
+-----------------
+
+The NPI-19 is not calibrated to units, you have to convert the measurement to units yourself.
+
+Estimated:
+**********
+
+In the `NPI-19 Product Application Note <https://www.amphenol-sensors.com/hubfs/I2C%20NPI-19%20product%20application%20Note.pdf>`__
+the value ``1638`` maps to approximately ``10%`` of the maximum value of the sesnor, for example ``0.5 psi`` for a ``5 psi``
+sensor. The value ``14746`` maps to approximately ``90%`` of the maximum value of the sensor, for example ``4.5 psi`` for a ``5 psi`` sensor.
+
+.. code-block:: yaml
+
+        # Extract of configuration
+        filters:
+          - calibrate_linear:
+            - 1638 -> 0.5
+            - 14746 -> 4.5
+
+Calibrated:
+***********
+1. Expose the sensor to a low known pressure, for example ``0 psi``.
+2. Observe the value of the raw pressure sensor, for example ``1500``.
+3. Expose the sensor to a high pressure, for example ``90 psi``.
+4. Observe the value of the raw pressure sensor, for example ``14500``.
+5. Use ``calibrate_linear`` filter to map the incoming value to the calibrated one:
+
+.. code-block:: yaml
+
+        # Extract of configuration
+        filters:
+          - calibrate_linear:
+            - 1500 -> 0
+            - 14500 -> 90.0
+
+
+Notes
+-----
+The NPI-19 I²C have a temperature output, however the manufacturer does
+not specify its accuracy on the published datasheet. They indicate
+that the sensor should not be used as a calibrated temperature
+reading; it’s only intended for curve fitting data during
+compensation.
+
+
+See Also
+--------
+
+- :ref:`sensor-filters`
+- `NPI-19 Datasheet <https://www.amphenol-sensors.com/hubfs/AAS-920-699F-NovaSensor-NPI-19-I2C-061322-web.pdf>`__
+- `NPI-19 Product Application Note <https://www.amphenol-sensors.com/hubfs/I2C%20NPI-19%20product%20application%20Note.pdf>`__
+- :ghedit:`Edit`
