@@ -78,12 +78,12 @@ Use ``calibrate_linear`` filter to map these sensor values:
 
 .. code-block:: yaml
 
-        # Extract of configuration
-        filters:
-          - calibrate_linear:
-            - 1000 -> 0.0
-            - 8000 -> 50.0
-            - 15000 -> 100.0
+    # Extract of configuration
+    filters:
+      - calibrate_linear:
+        - 1000 -> 0.0
+        - 8000 -> 50.0
+        - 15000 -> 100.0
 
 Calibrated
 **********
@@ -95,11 +95,11 @@ Calibrated
 
 .. code-block:: yaml
 
-        # Extract of configuration
-        filters:
-          - calibrate_linear:
-            - 990 -> 0
-            - 13550 -> 90.0
+    # Extract of configuration
+    filters:
+      - calibrate_linear:
+        - 990 -> 0
+        - 13550 -> 90.0
 
 
 See Also
