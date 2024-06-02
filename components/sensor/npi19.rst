@@ -70,9 +70,9 @@ The NPI-19 is not calibrated to units, you have to convert the measurement to un
 Estimated
 *********
 
-In the `NPI-19 Product Application Note <https://www.amphenol-sensors.com/hubfs/I2C%20NPI-19%20product%20application%20Note.pdf>`__
-the value ``1638`` maps to approximately ``10%`` of the maximum value of the sesnor, for example ``0.5 psi`` for a ``5 psi``
-sensor. The value ``14746`` maps to approximately ``90%`` of the maximum value of the sensor, for example ``4.5 psi`` for a ``5 psi`` sensor.
+On page 1 of the `product application note <https://www.amphenol-sensors.com/hubfs/I2C%20NPI-19%20product%20application%20Note.pdf>`__
+the value ``1638`` maps to approximately ``10%`` of the maximum value of the sesnor (e.g. ``0.5`` psi for a ``5`` psi sensor;
+the value ``14746`` maps to approximately ``90%`` of the maximum value of the sensor (e.g. ``4.5`` psi for a ``5``  psi sensor.
 Use ``calibrate_linear`` filter to map these sensor values:
 
 .. code-block:: yaml
@@ -85,9 +85,9 @@ Use ``calibrate_linear`` filter to map these sensor values:
 
 Calibrated
 **********
-1. Expose the sensor to a low known pressure, for example ``0 psi``.
+1. Expose the sensor to a low known pressure, for example ``0`` psi.
 2. Observe the value of the raw pressure sensor, for example ``1500``.
-3. Expose the sensor to a high pressure, for example ``90 psi``.
+3. Expose the sensor to a high pressure, for example ``90`` psi.
 4. Observe the value of the raw pressure sensor, for example ``14500``.
 5. Use ``calibrate_linear`` filter to map the incoming value to the calibrated one:
 
