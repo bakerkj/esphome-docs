@@ -50,22 +50,25 @@ Configuration
 Configuration variables
 -----------------------
 
-- **i2c_id** (*Optional*, :ref:`config-id`): Manually specify the ID of the :ref:`I²C Component <i2c>`. Defaults to the default I²C bus. 
-- **address** (*Optional*, int): Manually specify the I²C address of  the sensor. Defaults to ``0x28``. 
-- **pressure** (*Optional*): The information for the pressure sensor.
+- **pressure** (*Optional*): The information for the pressure sensor. See :ref:`npi19-converting`.
 
  - All other options from :ref:`Sensor <config-sensor>`.
 
-- **temperature** (*Optional*): The information for the temperature sensor.
+- **temperature** (*Optional*): The information for the temperature sensor. Readings in degrees celsius (°C).
 
  - All other options from :ref:`Sensor <config-sensor>`.
 
+- **i2c_id** (*Optional*, :ref:`config-id`): Manually specify the ID of the :ref:`I²C Component <i2c>`. Defaults to the default I²C bus.
+
+- **address** (*Optional*, int): Manually specify the I²C address of the sensor.
+  All known sensors currently configured to ``0x28``. Defaults to ``0x28``.
 
 
+.. _npi19-converting:
 Converting units
 -----------------
 
-The NPI-19 is not calibrated to units, you have to convert the measurement to units yourself.
+The NPI-19 pressure sensor is not calibrated to units, you have to convert the measurement to units yourself.
 
 Estimated
 *********
@@ -85,7 +88,7 @@ Use ``calibrate_linear`` filter to map these sensor values:
 
 Calibrated
 **********
-1. Expose the sensor to a low known pressure, for example ``0`` psi.
+1. Expose the sensor to a low known pressure, for example ``5`` psi.
 2. Observe the value of the raw pressure sensor, for example ``1500``.
 3. Expose the sensor to a high pressure, for example ``90`` psi.
 4. Observe the value of the raw pressure sensor, for example ``14500``.
@@ -96,7 +99,7 @@ Calibrated
     # Extract of configuration
     filters:
       - calibrate_linear:
-        - 1500 -> 0
+        - 1500 -> 5.0
         - 14500 -> 90.0
 
 
