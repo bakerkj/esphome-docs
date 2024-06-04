@@ -27,15 +27,15 @@ Configuration
                 
     sensor:
       - platform: tem3200
-        pressure:
+        raw_pressure:
           name: "Raw Pressure"
-          id: pressure_raw
+          id: raw_pressure
           
         temperature:
           name: Temperature
 
       - platform: copy
-        source_id: pressure_raw
+        source_id: raw_pressure
         name: Pressure
         state_class: measurement
         device_class: pressure
@@ -50,7 +50,7 @@ Configuration
 Configuration variables
 -----------------------
 
-- **pressure** (*Optional*): The information for the pressure sensor. See :ref:`tem3200-converting`.
+- **raw_pressure** (*Optional*): The information for the pressure sensor. See :ref:`tem3200-converting`.
 
  - All other options from :ref:`Sensor <config-sensor>`.
 
